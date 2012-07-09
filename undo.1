@@ -1,7 +1,7 @@
-.TH UNDO 1 "Jul 08, 2012" "undo user manual"
+.TH UNDO 1 "Jul 09, 2012" "undo user manual"
 .SH NAME
 .PP
-undo - undo commands
+undo - undo shell commands
 .SH SYNOPSIS
 .PP
 undo [-i|-p] command [arguments ...]
@@ -16,7 +16,7 @@ undo [-i|-p] command [arguments ...]
 .PP
 Undo generates and executes reverse commands according to the command
 passed in.
-.SH EXAMPLES
+.SS EXAMPLES
 .IP
 .nf
 \f[C]
@@ -31,7 +31,7 @@ undo\ -i\ !tar
 #\ Hit\ enter
 \f[]
 .fi
-.SH NOTES
+.SS NOTES
 .PP
 Undo supports or partially supports the following commands:
 .IP
@@ -40,6 +40,8 @@ Undo supports or partially supports the following commands:
 cp\ mv\ mkdir\ rmdir\ tar\ git\ gzip\ gunzip
 \f[]
 .fi
+.PP
+Undo \f[I]cannot\f[] undo commands that does not have reverse commands.
 .PP
 Undo must be called in the same directory the target command was
 executed.

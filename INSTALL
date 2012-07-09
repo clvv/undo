@@ -1,0 +1,15 @@
+Undo is a self contained posix shell script. A Makefile is provided to install
+`undo` and `undo.1` to desired places.
+
+
+System-wide install:
+
+    make install
+
+Install to $HOME:
+
+    PREFIX=$HOME make install
+
+Or alternatively you can just copy `undo` to anywhere you like, preferrably
+somewhere in your $PATH.
+

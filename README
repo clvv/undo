@@ -1,24 +1,28 @@
 % UNDO(1) undo user manual
 % Wei Dai <x@wei23.net>
-% Jul 08, 2012
+% Jul 09, 2012
 
-# NAME
+NAME
+====
 
-undo - undo commands
+undo - undo shell commands
 
-# SYNOPSIS
+SYNOPSIS
+========
 
 undo [-i|-p] command [arguments ...]
 
     -i   confirm before executing
     -p   only print the reverse command
 
-# DESCRIPTION
+DESCRIPTION
+===========
 
 Undo generates and executes reverse commands according to the command passed
 in.
 
-# EXAMPLES
+EXAMPLES
+--------
 
     # 1. With help from history substitution
     undo !!
@@ -30,11 +34,14 @@ in.
     # Insert "undo" in front of the target command
     # Hit enter
 
-# NOTES
+NOTES
+-----
 
 Undo supports or partially supports the following commands:
 
     cp mv mkdir rmdir tar git gzip gunzip
+
+Undo *cannot* undo commands that does not have reverse commands.
 
 Undo must be called in the same directory the target command was executed.
 
@@ -49,11 +56,13 @@ Undo is alpha software, it is suggested that you use the below alias:
 
     alias undo='undo -i'
 
-# CONTRIBUTING
+CONTRIBUTING
+============
 
 Undo is hosted on GitHub: https://github.com/clvv/undo
 
-# COPYING
+COPYING
+=======
 
 Undo is licensed under the "MIT/X11" license.
 

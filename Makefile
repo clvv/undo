@@ -20,8 +20,8 @@ install:
 
 man: undo.1
 
-undo.1: README.md
-	pandoc -s -w man README.md -o undo.1
+undo.1: README
+	pandoc -s -w man README -o undo.1
 
 .PHONY: all install uninstall man
 
