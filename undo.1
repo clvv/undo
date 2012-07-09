@@ -1,0 +1,69 @@
+.TH UNDO 1 "Jul 08, 2012" "undo user manual"
+.SH NAME
+.PP
+undo - undo commands
+.SH SYNOPSIS
+.PP
+undo [-i|-p] command [arguments ...]
+.IP
+.nf
+\f[C]
+-i\ \ \ confirm\ before\ executing
+-p\ \ \ only\ print\ the\ reverse\ command
+\f[]
+.fi
+.SH DESCRIPTION
+.PP
+Undo generates and executes reverse commands according to the command
+passed in.
+.SH EXAMPLES
+.IP
+.nf
+\f[C]
+#\ 1.\ With\ help\ from\ history\ substitution
+undo\ !!
+undo\ !-2
+undo\ -i\ !tar
+
+#\ 2.\ With\ help\ from\ command\ history
+#\ Use\ your\ favorite\ way\ to\ navigate\ to\ the\ target\ command
+#\ Insert\ "undo"\ in\ front\ of\ the\ target\ command
+#\ Hit\ enter
+\f[]
+.fi
+.SH NOTES
+.PP
+Undo supports or partially supports the following commands:
+.IP
+.nf
+\f[C]
+cp\ mv\ mkdir\ rmdir\ tar\ git\ gzip\ gunzip
+\f[]
+.fi
+.PP
+Undo must be called in the same directory the target command was
+executed.
+.PP
+Undo \f[I]does not\f[] and \f[I]cannot\f[] access your shell command
+history.
+You should use history functionalities provided by your shell to pass
+the target command to undo.
+.PP
+Undo sources undo recipes from "/etc/undo_recipes" or
+"$HOME/undo_recipes" if found.
+.PP
+Undo is alpha software, it is suggested that you use the below alias:
+.IP
+.nf
+\f[C]
+alias\ undo=\[aq]undo\ -i\[aq]
+\f[]
+.fi
+.SH CONTRIBUTING
+.PP
+Undo is hosted on GitHub: https://github.com/clvv/undo
+.SH COPYING
+.PP
+Undo is licensed under the "MIT/X11" license.
+.SH AUTHORS
+Wei Dai <x@wei23.net>.

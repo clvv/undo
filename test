@@ -1,0 +1,97 @@
+#!/usr/bin/env sh
+
+# All recipes must have a test.
+# Support for spaces and other special characters should be tested.
+
+oneTimeSetUp() {
+  undo="$PWD/undo -p"
+  mkdir "$SHUNIT_TMPDIR/dir"
+  for file in a b "c d"; do
+    touch "$SHUNIT_TMPDIR/$file"
+  done
+}
+
+assertIsReverse() {
+  while read -r line; do
+    command="${line%%->*}"
+    reverse="${line##*-> }"
+    ret="$(eval "$undo" "$command")"
+    ret="${ret%% }" # We don't care about trailing spaces
+    assertEquals "command: $command" "$reverse" "$ret"
+  done
+}
+
+test_mv() {
+  cd "$SHUNIT_TMPDIR"
+  assertIsReverse <<EOS
+    mv a b         -> mv b a
+    mv a "c d"     -> mv c\\ d a
+    mv a b dir     -> mv dir/a ./; mv dir/b ./;
+    mv /a /b dir   -> mv dir/a /; mv dir/b /;
+    mv /a/ /b/ dir -> mv dir/a /; mv dir/b /;
+    mv dir0 dir    -> mv dir dir0
+    mv 'dir 0' dir -> mv dir dir\\ 0
+EOS
+}
+
+test_cp() {
+  cd "$SHUNIT_TMPDIR"
+  assertIsReverse <<EOS
+    cp a b         -> rm b
+    cp "c d" a     -> rm a
+    cp b 'c d'     -> rm c\\ d
+    cp a b dir     -> rm dir/a; rm dir/b;
+    cp /a /b dir   -> rm dir/a; rm dir/b;
+    cp /a/ /b/ dir -> rm dir/a; rm dir/b;
+    cp -r dir0 dir -> rm -r dir
+EOS
+}
+
+test_mkdir() {
+  cd "$SHUNIT_TMPDIR"
+  assertIsReverse <<EOS
+    mkdir dir2    -> rmdir dir2
+    mkdir "d i r" -> rmdir d\\ i\\ r
+    mkdir a b c   -> rmdir a b c
+EOS
+}
+
+test_rmdir() {
+  cd "$SHUNIT_TMPDIR"
+  assertIsReverse <<EOS
+    rmdir dir     -> mkdir dir
+    rmdir "d i r" -> mkdir d\\ i\\ r
+    rmdir a b c   -> mkdir a b c
+EOS
+}
+
+test_tar() {
+  assertIsReverse <<EOS
+    tar xzvf file -> tar tzf file | xargs rm 2>/dev/null; \
+tar tzf file | tac | xargs rmdir 2>/dev/null;
+EOS
+}
+
+test_gzip() {
+  assertIsReverse <<EOS
+    gzip 'file a'          -> gunzip file\\ a.gz
+    gzip 'file a' 'file b' -> gunzip file\\ a.gz file\\ b.gz
+EOS
+}
+
+test_gunzip() {
+  assertIsReverse <<EOS
+    gunzip 'file a.gz'             -> gzip file\\ a
+    gunzip 'file a.gz' 'file b.gz' -> gzip file\\ a file\\ b
+EOS
+}
+
+test_git() {
+  assertIsReverse <<EOS
+    git add 'file a' -> git reset HEAD -- file\\ a
+EOS
+}
+
+[ -n "$ZSH_VERSION" ] && SHUNIT_PARENT=$0 && setopt shwordsplit
+. ./shunit2
+
