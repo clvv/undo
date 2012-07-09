@@ -56,7 +56,7 @@ command="$1" && shift
 # Shell quote an argument.
 # Synopsis: quote argument
 quote() {
-  printf '%s\n' "$1" | sed 's/\([|&;<>()$`\\"'"'"' 	\n*?#~=%\[]\)/\\\1/g'
+  printf '%s\n' "$1" | sed 's/\([|&;<>()$`\\"'"'"' 	*?#~=%\[]\)/\\\1/g'
 }
 
 # Print messages to STDERR and exit with given exit code.
