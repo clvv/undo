@@ -59,9 +59,10 @@ EOS
 test_rmdir() {
   cd "$SHUNIT_TMPDIR"
   assertIsReverse <<EOS
-    rmdir dir     -> mkdir dir
-    rmdir "d i r" -> mkdir d\\ i\\ r
-    rmdir a b c   -> mkdir a b c
+    rmdir dir        -> mkdir dir
+    rmdir "d i r"    -> mkdir d\\ i\\ r
+    rmdir a b c      -> mkdir a b c
+    rmdir -p dir/a/b -> mkdir -p dir/a/b
 EOS
 }
 

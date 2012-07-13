@@ -53,10 +53,15 @@ command="$1" && shift
 # Helpers
 # =======
 
-# Shell quote an argument.
-# Synopsis: quote argument
+# Shell quote arguments.
+# Synopsis: quote argument...
 quote() {
-  printf '%s\n' "$1" | sed 's/\([|&;<>()$`\\"'"'"' 	*?#~=%\[]\)/\\\1/g'
+  while [ "$1" ]; do
+    printf %s "$1" | sed 's/\([|&;<>()$`\\"'"'"' 	*?#~=%\[]\)/\\\1/g'
+    [ "$2" ] && printf ' '
+    shift
+  done
+  printf '\n'
 }
 
 # Print messages to STDERR and exit with given exit code.
@@ -165,7 +170,7 @@ cmd mkdir && \
 
 cmd rmdir && \
   reverse_cmd() {
-    format_args 'mkdir %s' -- "$@"
+    printf %s "mkdir $(quote "$@")"
   }
 
 cmd tar && \
